@@ -1,0 +1,167 @@
+﻿<Window x:Class="YourNamespace.ctrlXCommunicator"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ctrlX Data Layer Explorer"
+        Height="650"
+        Width="450"
+        WindowStartupLocation="CenterScreen"
+        Background="#F4F4F7"
+        FontFamily="Segoe UI Semibold">
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0"
+              Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Ellipse x:Name="ConnectionLed"
+                     Grid.Column="0"
+                     Width="10"
+                     Height="10"
+                     Fill="Gray"
+                     Margin="0,0,8,0"
+                     VerticalAlignment="Center" />
+            <TextBox x:Name="IpAddressInput"
+                     Grid.Column="1"
+                     Text="192.168.0.11"
+                     FontSize="11"
+                     Height="22"
+                     VerticalContentAlignment="Center"
+                     Margin="0,0,5,0" />
+            <Button x:Name="BtnApplyIp"
+                    Grid.Column="2"
+                    Content="Connect"
+                    Click="BtnApplyIp_Click"
+                    FontSize="10"
+                    Padding="10,0"
+                    Height="22"
+                    Background="#0079C1"
+                    Foreground="White"
+                    BorderThickness="0"
+                    Margin="0,0,10,0" />
+            <TextBlock x:Name="ConnectionStatusText"
+                       Grid.Column="3"
+                       Text="DISCONNECTED"
+                       FontSize="11"
+                       VerticalAlignment="Center"
+                       Foreground="Gray" />
+        </Grid>
+
+        <Border Grid.Row="1"
+                Background="White"
+                CornerRadius="8"
+                Padding="15"
+                Margin="0,0,0,10">
+            <StackPanel>
+                <TextBlock Text="SELECTED NODE PATH"
+                           FontSize="10"
+                           Foreground="Gray" />
+                <TextBlock x:Name="CurrentPathText"
+                           Text="..."
+                           FontSize="11"
+                           Foreground="#0079C1"
+                           TextWrapping="Wrap"
+                           Margin="0,2,0,10" />
+
+                <Separator Background="#F0F0F0" />
+
+                <TextBlock Text="LIVE VALUE"
+                           HorizontalAlignment="Center"
+                           FontSize="10"
+                           Foreground="Gray"
+                           Margin="0,10,0,0" />
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <TextBlock x:Name="ValueText"
+                               Text="---"
+                               FontSize="32"
+                               FontWeight="Bold" />
+                    <TextBlock x:Name="ResultStatusText"
+                               Text=""
+                               FontSize="10"
+                               Foreground="Gray"
+                               VerticalAlignment="Bottom"
+                               Margin="10,0,0,8" />
+                </StackPanel>
+
+                <StackPanel x:Name="WritePanel"
+                            Margin="0,15,0,0"
+                            Visibility="Collapsed">
+                    <TextBlock Text="CHANGE VALUE"
+                               FontSize="10"
+                               Foreground="Gray"
+                               Margin="0,0,0,5"
+                               HorizontalAlignment="Center" />
+                    <Grid>
+                        <ComboBox x:Name="BoolWriteCombo"
+                                  Visibility="Collapsed"
+                                  Height="30">
+                            <ComboBoxItem Content="True" />
+                            <ComboBoxItem Content="False" />
+                        </ComboBox>
+                        <TextBox x:Name="ValueWriteInput"
+                                 Visibility="Collapsed"
+                                 Height="30"
+                                 VerticalContentAlignment="Center"
+                                 Padding="5,0" />
+                    </Grid>
+                    <Button x:Name="BtnWrite"
+                            Content="Apply Change"
+                            Margin="0,10,0,0"
+                            Click="BtnWrite_Click"
+                            Background="#0079C1"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Height="30" />
+                    <TextBlock x:Name="WriteErrorText"
+                               Foreground="Red"
+                               FontSize="10"
+                               HorizontalAlignment="Center"
+                               Margin="0,5,0,0" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <GroupBox Grid.Row="2"
+                  Header="Data Layer Browser">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal"
+                            Margin="0,5">
+                    <Button Content="↑ Back"
+                            Click="BackBtn_Click"
+                            Width="60"
+                            Background="#666666"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Margin="0,0,5,0" />
+                    <Button Content="↻ Refresh"
+                            Click="RefreshBtn_Click"
+                            Width="70"
+                            Background="#0079C1"
+                            Foreground="White"
+                            BorderThickness="0" />
+                </StackPanel>
+
+                <ListBox x:Name="NodeListBox"
+                         Grid.Row="1"
+                         SelectionChanged="NodeListBox_SelectionChanged"
+                         MouseDoubleClick="NodeListBox_MouseDoubleClick" />
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>
