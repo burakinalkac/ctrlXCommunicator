@@ -195,14 +195,25 @@ namespace YourNamespace
                 if (_connectionHealthy && _client != null && !string.IsNullOrEmpty(_selectedMonitoringPath))
                 {
                     var readResult = _client.Read(_selectedMonitoringPath);
-
                     if (readResult.Item1.IsGood())
                     {
                         using (var val = readResult.Item2)
                         {
                             string displayValue = "Unknown";
-
-                            Dispatcher.Invoke(() =>
+                            if (val.IsBool)
+                                displayValue = val.ToBool().ToString();
+                            else if (val.IsString)
+                                displayValue = val.ToString();
+                            else if (val.DataType == DLR_VARIANT_TYPE.DLR_VARIANT_TYPE_INT16)
+                                displayValue = val.ToInt16().ToString();
+                            else if (val.DataType == DLR_VARIANT_TYPE.DLR_VARIANT_TYPE_INT8)
+                                displayValue = val.ToSByte().ToString();
+                            else if (val.DataType == DLR_VARIANT_TYPE.DLR_VARIANT_TYPE_UINT8)
+                                displayValue = val.ToByte().ToString();
+                            else if (val.IsNumber)
+                                displayValue = "Number (Check DataType)";
+                            
+                            Dispatcher.Invoke(() => 
                             {
                                 ValueText.Text = displayValue;
                                 ValueText.Foreground = Brushes.Black;
