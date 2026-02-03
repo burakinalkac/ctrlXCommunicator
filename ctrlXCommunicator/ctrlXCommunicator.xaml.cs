@@ -1,5 +1,6 @@
 ﻿using comm.datalayer;
 using Datalayer;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -218,7 +219,11 @@ namespace YourNamespace
                                 ValueText.Text = displayValue;
                                 ValueText.Foreground = Brushes.Black;
                                 if (ResultStatusText != null)
-                                    ResultStatusText.Text = $"Type: {val.DataType}";
+                                {
+                                    string fullType = val.DataType.ToString();
+                                    string shortType = fullType.Substring(fullType.LastIndexOf('_') + 1);
+                                    ResultStatusText.Text = $"Type: {shortType}";
+                                }
                             });
                         }
                     }

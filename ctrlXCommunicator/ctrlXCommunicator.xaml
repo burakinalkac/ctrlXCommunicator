@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ctrlX Data Layer Explorer"
-        Height="650"
-        Width="450"
+        Height="950"
+        Width="650"
         WindowStartupLocation="CenterScreen"
         Background="#F4F4F7"
         FontFamily="Segoe UI Semibold">
