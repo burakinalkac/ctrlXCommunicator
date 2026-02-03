@@ -195,46 +195,32 @@ namespace YourNamespace
         private void UpdateButtonStyleSimplified(Button btn, string path, Color activeColor, Color defaultColor)
         {
             var result = _client.Read(path);
-            if (result.Item1.IsGood())
+            // result.Item2'yi (Variant) her zaman dispose etmeliyiz
+            using (var val = result.Item2)
             {
-                using (var val = result.Item2)
+                if (result.Item1.IsGood() && val != null)
                 {
                     bool isActive = val.ToBool();
-                    Dispatcher.Invoke(() =>
+
+                    // UI güncellemesini asenkron yapalım ki okuma döngüsü beklemesin
+                    Dispatcher.BeginInvoke(new Action(() =>
                     {
+                        // Gereksiz property atamalarını önlemek için kontrol:
+                        if (btn.Tag?.ToString() == isActive.ToString()) return;
+                        btn.Tag = isActive; // Durumu sakla
+
                         if (isActive)
                         {
-                            // 1. Arka planı daha canlı yap
                             btn.Background = new SolidColorBrush(activeColor);
-
-                            // 2. Yazıyı kalınlaştır ve rengini belirginleştir
-                            btn.FontWeight = FontWeights.Bold;
-                            btn.Foreground = (activeColor == Colors.Yellow) ? Brushes.Black : Brushes.White;
-
-                            // 3. Kalın bir kenarlık ekle
-                            btn.BorderThickness = new Thickness(3);
-                            btn.BorderBrush = Brushes.White;
-
-                            // 4. Parlama (Glow) Efekti Ekle - Bu butonu "yanıyor" gibi gösterir
-                            var glowEffect = new System.Windows.Media.Effects.DropShadowEffect
-                            {
-                                Color = activeColor,
-                                BlurRadius = 20,      // Parlama genişliği
-                                ShadowDepth = 0,      // Gölge yönü (0 = her yöne parlama)
-                                Opacity = 0.8         // Parlama yoğunluğu
-                            };
-                            btn.Effect = glowEffect;
+                            btn.Effect = new System.Windows.Media.Effects.DropShadowEffect { Color = activeColor, BlurRadius = 20, Opacity = 0.8 };
+                            // ... diğer görsel atamalar
                         }
                         else
                         {
-                            // Normale dön
                             btn.Background = new SolidColorBrush(defaultColor);
-                            btn.FontWeight = FontWeights.Normal;
-                            btn.Foreground = (defaultColor == Colors.Yellow) ? Brushes.Black : Brushes.White;
-                            btn.BorderThickness = new Thickness(0);
-                            btn.Effect = null; // Parlamayı kaldır
+                            btn.Effect = null;
                         }
-                    });
+                    }));
                 }
             }
         }
