@@ -31,6 +31,11 @@ namespace YourNamespace
         private string _selectedMonitoringPath = "";
         private DLR_VARIANT_TYPE _currentSelectedType;
 
+        private const string PATH_START = "plc/app/Application/sym/GVL_CUSTOMER/stSetUp/Vacuum1_Feedback";
+        private const string PATH_PAUSE = "plc/app/Application/sym/GVL_CUSTOMER/stSetUp/Vacuum1_Use";
+        private const string PATH_ABORT = "plc/app/Application/sym/GVL_CUSTOMER/stSetUp/Vacuum2_Feedback";
+        private const string PATH_RESET = "plc/app/Application/sym/GVL_CUSTOMER/stSetUp/Vacuum2_Use";
+
         public ctrlXCommunicator()
         {
             InitializeComponent();
@@ -381,5 +386,37 @@ namespace YourNamespace
         }
 
         #endregion
+
+        #region PROCESS BUTTONS
+        private void SetVariableTrue(string path)
+        {
+            if (_client == null || !_connectionHealthy)
+            {
+                MessageBox.Show("Lütfen önce bağlantı kurun!", "Bağlantı Hatası", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                using (var val = new Variant(true)) // Değeri TRUE yapıyoruz
+                {
+                    var result = _client.Write(path, val);
+                    if (result.IsBad())
+                    {
+                        MessageBox.Show($"{path} yazma hatası: {result}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"İşlem sırasında hata oluştu: {ex.Message}");
+            }
+        }
+        private void BtnStart_Click(object sender, RoutedEventArgs e) => SetVariableTrue(PATH_START);
+        private void BtnPause_Click(object sender, RoutedEventArgs e) => SetVariableTrue(PATH_PAUSE);
+        private void BtnAbort_Click(object sender, RoutedEventArgs e) => SetVariableTrue(PATH_ABORT);
+        private void BtnReset_Click(object sender, RoutedEventArgs e) => SetVariableTrue(PATH_RESET);
+        #endregion
+
     }
 }
