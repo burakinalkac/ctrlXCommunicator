@@ -9,7 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BaSyx.ctrlX.DataLayerService" Version="2.0.24" />
+    <PackageReference Include="ctrlX-DataLayer" Version="5.0.0" />
+    <PackageReference Include="ctrlX-DataLayer.Flatbuffers" Version="4.4.0" />
   </ItemGroup>
 
 </Project>
